@@ -5,7 +5,7 @@
     <style>
         @page {
             size: letter;
-            margin: 0.5cm 1.5cm;
+            margin: 0.5cm 1.2cm;
         }
         body {
             font-family: Helvetica, Arial, sans-serif;
@@ -13,39 +13,45 @@
             line-height: 1.1;
         }
         
-        /* HEADER: Titulo y Logo */
+        /* HEADER: Logo y Título Proporcionales */
         .header-table {
             width: 100%;
             border-bottom: 5px solid #000;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
         .car-title {
-            font-size: 54pt; /* Ajustado para que no rompa línea */
+            font-size: 38pt; /* Tamaño reducido para ser proporcional al logo */
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: -2px;
+            letter-spacing: -1px;
             margin: 0;
             padding: 0;
+            vertical-align: middle;
+        }
+        .logo-cell {
+            width: 180px; /* Logo más grande */
+            text-align: right;
+            vertical-align: middle;
         }
         .meta-text {
-            font-size: 13pt;
-            margin: 10px 0;
+            font-size: 12pt;
+            margin: 12px 0;
             text-transform: uppercase;
         }
 
-        /* CUERPO: Foto y Lote lateral */
+        /* CUERPO: Foto y Lote */
         .main-table {
             width: 100%;
             margin-top: 10px;
         }
         .photo-img {
-            width: 450px;
+            width: 460px;
             height: 290px;
             object-fit: cover;
         }
         .info-panel {
             vertical-align: top;
-            padding-left: 20px;
+            padding-left: 25px;
         }
         .label {
             color: #666;
@@ -61,7 +67,7 @@
         .lote-box {
             font-size: 38pt;
             font-weight: 900;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         /* TABLA DE COSTOS */
@@ -92,7 +98,7 @@
             text-align: right;
             font-size: 14pt;
             font-weight: bold;
-            padding-right: 15px;
+            padding-right: 20px;
         }
         .total-box {
             background-color: #000;
@@ -101,14 +107,14 @@
             font-weight: 900;
             padding: 12px;
             text-align: center;
-            width: 230px;
+            width: 240px;
         }
 
         .footer {
-            margin-top: 20px;
+            margin-top: 25px;
             font-size: 8.5pt;
             border-top: 1px solid #eee;
-            padding-top: 8px;
+            padding-top: 10px;
         }
     </style>
 </head>
@@ -116,32 +122,30 @@
 
     <table class="header-table">
         <tr>
-            <td style="vertical-align: bottom;">
+            <td style="vertical-align: middle; padding-bottom: 10px;">
                 <div class="car-title">{{ producto }}</div>
-                <div class="meta-text">
-                    ESTADO DE COMPRA: <b>{{ estado }}</b> &nbsp;&nbsp; | &nbsp;&nbsp; CLIENTE: <b>{{ cliente }}</b>
-                </div>
             </td>
-            <td style="width: 150px; text-align: right; vertical-align: middle;">
-                <img src="{{ logo_url }}" width="150">
-            </td>
+            <td class="logo-cell">
+                <img src="{{ logo_url }}" width="180"> </td>
         </tr>
     </table>
 
+    <div class="meta-text">
+        ESTADO DE COMPRA: <b>{{ estado }}</b> &nbsp;&nbsp; | &nbsp;&nbsp; CLIENTE: <b>{{ cliente }}</b>
+    </div>
+
     <table class="main-table">
         <tr>
-            <td style="width: 450px;">
+            <td style="width: 460px;">
                 {% if foto_url %}
                     <img src="{{ foto_url }}" class="photo-img">
-                {% else %}
-                    <div style="width: 450px; height: 290px; background-color: #eee;"></div>
                 {% endif %}
             </td>
             <td class="info-panel">
                 <div class="label">FECHA DE OPERACIÓN</div>
                 <div class="value">{{ fecha }}</div>
                 
-                <div style="margin-top: 60px;">
+                <div style="margin-top: 55px;">
                     <div class="label">ID DE INVENTARIO / LOTE</div>
                     <div class="lote-box">#{{ lote }}</div>
                 </div>
@@ -174,7 +178,7 @@
     </table>
 
     <div class="footer">
-        <b>CONDICIONES DE UNIDAD:</b> Unidad vendida en condiciones "AS-IS" (según se encuentra). No se aceptan reclamaciones posteriores a la firma de conformidad.
+        <b>CONDICIONES DE UNIDAD:</b> Unidad vendida en condiciones "AS-IS". No se aceptan reclamaciones posteriores a la firma de conformidad.
     </div>
 
 </body>

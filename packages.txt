@@ -3,3 +3,4 @@ libxext6
 fontconfig
 xfonts-base
 xfonts-75dpi
+wkhtmltopdf

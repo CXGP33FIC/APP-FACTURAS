@@ -1,6 +1,5 @@
 import streamlit as st
 from jinja2 import Template
-import pdfkit
 import base64
 import pandas as pd
 from datetime import datetime
@@ -8,6 +7,8 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import os
+from xhtml2pdf import pisa  # NUEVO MOTOR DE PDF
+from io import BytesIO
 
 # Configuración de la página
 st.set_page_config(page_title="Esaú Cars - Invoice Engine", page_icon="🏎️", layout="wide")
@@ -131,45 +132,20 @@ if st.button("🚀 GENERAR PDF"):
             total=f"{df_costos['Monto'].sum():,.2f}"
         )
 
-        # 3. CONFIGURACIÓN DEL MOTOR DE PDF
-        options = {
-            'page-size': 'Letter',
-            'encoding': "UTF-8",
-            'margin-top': '0',
-            'margin-bottom': '0',
-            'margin-left': '0',
-            'margin-right': '0',
-            'enable-local-file-access': None,
-            'no-outline': None
-        }
-
-        try:
-            if os.name == 'nt':  # Entorno Windows Local
-                path_wk = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
-                config = pdfkit.configuration(wkhtmltopdf=path_wk)
-            else:  # Entorno Streamlit Cloud (Linux)
-                # Ruta común en Debian/Ubuntu
-                bin_path = '/usr/bin/wkhtmltopdf'
-                if os.path.exists(bin_path):
-                    config = pdfkit.configuration(wkhtmltopdf=bin_path)
-                else:
-                    # Si no está en la ruta fija, intentamos que el sistema lo localice solo
-                    config = pdfkit.configuration()
-            
-            pdf = pdfkit.from_string(html_final, False, configuration=config, options=options)
-        except Exception as e_pdf:
-            # Plan B: Generación sin configuración forzada
-            st.warning("Ajustando motor de PDF...")
-            pdf = pdfkit.from_string(html_final, False, options=options)
-      
-        st.success("✅ ¡Factura generada con éxito!")
-        st.download_button(
-            label="⬇️ Descargar Factura",
-            data=pdf,
-            file_name=f"Factura_{lote}.pdf",
-            mime="application/pdf"
-        )
+        # 3. GENERACIÓN DEL PDF CON MOTOR COMPATIBLE CON LA NUBE
+        result = BytesIO()
+        pdf = pisa.pisaDocument(BytesIO(html_final.encode("UTF-8")), result)
+        
+        if not pdf.err:
+            st.success("✅ ¡Factura generada con éxito!")
+            st.download_button(
+                label="⬇️ Descargar Factura",
+                data=result.getvalue(),
+                file_name=f"Factura_{lote}.pdf",
+                mime="application/pdf"
+            )
+        else:
+            st.error("Error al procesar el diseño del PDF.")
       
     except Exception as e:
         st.error(f"Error crítico: {e}")
-        st.info("Consejo: Verifica que 'packages.txt' tenga las librerías necesarias en GitHub.")

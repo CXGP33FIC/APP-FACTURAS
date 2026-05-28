@@ -1,270 +1,172 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
     <meta charset="UTF-8">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        
-        body { 
-            font-family: 'Inter', sans-serif; 
-            margin: 0; 
-            padding: 10px 70px 40px 70px; 
+        @page {
+            size: letter;
+            margin: 0cm;
+        }
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             color: #1a1c2c;
-            background-color: #ffffff;
         }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center; 
-            margin-top: 5px; 
-            margin-bottom: 25px; 
-            min-height: 180px; 
+        .container {
+            padding: 40px 50px;
         }
-
-        .title-section {
-            flex: 2;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .car-title {
-            font-size: 65px; 
-            font-weight: 900;
-            text-transform: uppercase;
-            line-height: 1;
-            margin: 0;
-            color: #000;
-            letter-spacing: -2px;
-        }
-
-        .meta-info {
-            font-size: 16px; 
-            text-transform: uppercase;
-            margin-top: 15px; 
-        }
-
-        .meta-info div { margin-bottom: 4px; }
-        .label { font-weight: 900; color: #1a1c2c; }
-
-        .logo-box {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-box img { 
-            width: 320px; 
-            height: auto;
-        }
-
-        .hr-top {
-            border: 0;
-            border-top: 6px solid #1a1c2c;
-            margin-bottom: 40px;
-        }
-
-        .main-content {
-            display: flex;
-            gap: 0;
-            margin-bottom: 50px;
-        }
-
-        .photo-container {
-            flex: 1.8;
-        }
-
-        .main-photo {
+        /* Header con Logo y Título */
+        .header-table {
             width: 100%;
-            height: 380px;
+            margin-bottom: 20px;
+        }
+        .car-title {
+            font-size: 42pt;
+            font-weight: bold;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+        .logo-img {
+            width: 150px;
+            text-align: right;
+        }
+        /* Sección de Foto y Datos */
+        .main-table {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        .car-photo-cell {
+            width: 65%;
+            vertical-align: top;
+        }
+        .car-photo {
+            width: 450px;
+            height: 300px;
             object-fit: cover;
-            display: block;
+            border-radius: 5px;
         }
-
-        .info-card {
-            flex: 1;
-            background: #1a1c2c;
-            color: white;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        .info-cell {
+            width: 35%;
+            vertical-align: top;
+            padding-left: 20px;
         }
-
-        .card-label { 
-            font-size: 11px; 
-            font-weight: 700; 
-            color: #ffc107; 
-            text-transform: uppercase; 
-            letter-spacing: 1.5px;
-            margin-bottom: 8px;
+        .label {
+            font-size: 9pt;
+            color: #666;
+            margin-bottom: 5px;
+            text-transform: uppercase;
         }
-
-        .card-value { 
-            font-size: 24px; 
-            font-weight: 700; 
-            margin-bottom: 30px; 
+        .value {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-bottom: 15px;
         }
-
-        .lote-value { 
-            font-size: 60px; 
-            font-weight: 900; 
-            color: #ffc107; 
-            margin: 0;
-            line-height: 0.9;
+        .lote-box {
+            font-size: 24pt;
+            font-weight: bold;
+            color: #000;
         }
-
-        table {
+        /* Tabla de Costos */
+        table.costos {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 40px;
-        }
-
-        thead th {
-            background-color: #f8f8f8;
-            padding: 20px;
-            text-align: left;
-            font-size: 13px;
-            font-weight: 900;
-            text-transform: uppercase;
-            position: relative;
-        }
-
-        thead th:first-child::before, thead th:last-child::after {
-            content: "";
-            position: absolute;
-            top: 15%;
-            height: 70%;
-            width: 6px;
-            background: #ffc107;
-        }
-        thead th:first-child::before { left: 0; }
-        thead th:last-child::after { right: 0; }
-
-        tbody td {
-            padding: 20px;
-            border-bottom: 1px solid #eee;
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .total-container {
-            display: flex;
-            justify-content: flex-end;
             margin-top: 20px;
         }
-
-        .total-wrapper {
-            display: flex;
+        table.costos th {
+            background-color: #f2f2f2;
+            text-align: left;
+            padding: 10px;
+            font-size: 10pt;
+            border-bottom: 2px solid #000;
         }
-
-        .total-label-box {
-            background: #ffc107;
-            padding: 20px 30px;
-            font-weight: 900;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
+        table.costos td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 11pt;
         }
-
-        .total-amount-box {
-            background: #1a1c2c;
+        /* Total */
+        .total-section {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .total-box {
+            display: inline-block;
+            background-color: #000;
             color: #fff;
-            padding: 20px 50px;
-            font-size: 40px;
-            font-weight: 900;
+            padding: 15px 30px;
+            font-size: 20pt;
+            font-weight: bold;
         }
-
         .footer {
-            margin-top: 80px;
-            border-top: 1px dotted #ccc;
-            padding-top: 30px;
+            margin-top: 40px;
+            font-size: 8pt;
+            color: #888;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
         }
-
-        .footer-title {
-            font-size: 14px;
-            font-weight: 900;
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .footer-title::before {
-            content: "";
-            width: 10px; height: 10px; background: #ffc107; border-radius: 50%; margin-right: 12px;
-        }
-
-        .footer-text { font-size: 13px; color: #666; line-height: 1.6; }
-
     </style>
 </head>
 <body>
-
-    <div class="header">
-        <div class="title-section">
-            <h1 class="car-title">{{ producto }}</h1>
-            <div class="meta-info">
-                <div><span class="label">ESTADO DE COMPRA:</span> {{ estado }}</div>
-                <div><span class="label">CLIENTE:</span> {{ cliente }}</div>
-            </div>
-        </div>
-        <div class="logo-box">
-            <img src="{{ logo_url }}">
-        </div>
-    </div>
-
-    <hr class="hr-top">
-
-    <div class="main-content">
-        <div class="photo-container">
-            {% if foto_url %}
-                <img src="{{ foto_url }}" class="main-photo">
-            {% else %}
-                <div style="width: 100%; height: 380px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #ccc; font-weight: bold;">
-                    SIN FOTO DISPONIBLE
-                </div>
-            {% endif %}
-        </div>
-        
-        <div class="info-card">
-            <div class="card-label">FECHA DE OPERACIÓN</div>
-            <div class="card-value">{{ fecha }}</div>
-            
-            <div class="card-label">ID DE INVENTARIO / LOTE</div>
-            <div class="lote-value">#{{ lote }}</div>
-        </div>
-    </div>
-
-    <table>
-        <thead>
+    <div class="container">
+        <table class="header-table">
             <tr>
-                <th>DESCRIPCIÓN DEL CONCEPTO</th>
-                <th style="text-align: right;">MONTO UNITARIO (USD)</th>
+                <td>
+                    <div class="car-title">{{ producto }}</div>
+                    <div style="margin-top: 10px; font-size: 12pt;">
+                        ESTADO DE COMPRA: <b>{{ estado }}</b><br>
+                        CLIENTE: <b>{{ cliente }}</b>
+                    </div>
+                </td>
+                <td class="logo-img">
+                    <img src="{{ logo_url }}" width="150">
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            {% for item in costos %}
+        </table>
+
+        <table class="main-table">
             <tr>
-                <td>{{ item.Concepto }}</td>
-                <td style="text-align: right;">$ {{ "{:,.2f}".format(item.Monto) }}</td>
+                <td class="car-photo-cell">
+                    {% if foto_url %}
+                        <img src="{{ foto_url }}" class="car-photo">
+                    {% endif %}
+                </td>
+                <td class="info-cell">
+                    <div class="label">FECHA DE OPERACIÓN</div>
+                    <div class="value">{{ fecha }}</div>
+                    
+                    <div class="label">ID DE INVENTARIO / LOTE</div>
+                    <div class="lote-box">#{{ lote }}</div>
+                </td>
             </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        </table>
 
-    <div class="total-container">
-        <div class="total-wrapper">
-            <div class="total-label-box">LIQUIDACIÓN TOTAL</div>
-            <div class="total-amount-box">$ {{ total }}</div>
+        <table class="costos">
+            <thead>
+                <tr>
+                    <th>DESCRIPCIÓN DEL CONCEPTO</th>
+                    <th style="text-align: right;">MONTO (USD)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in costos %}
+                <tr>
+                    <td>{{ item.Concepto }}</td>
+                    <td style="text-align: right;">$ {{ "{:,.2f}".format(item.Monto) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="total-section">
+            <span style="font-size: 12pt; font-weight: bold; margin-right: 10px;">TOTAL A LIQUIDAR:</span>
+            <div class="total-box">$ {{ total }}</div>
         </div>
-    </div>
 
-    <div class="footer">
-        <div class="footer-title">CONDICIONES DE UNIDAD</div>
-        <div class="footer-text">
+        <div class="footer">
+            <b>CONDICIONES DE UNIDAD:</b><br>
             Unidad vendida en condiciones "AS-IS" (según se encuentra). No se aceptan reclamaciones posteriores a la firma de conformidad.
         </div>
     </div>
-
 </body>
 </html>

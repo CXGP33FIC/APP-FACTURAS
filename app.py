@@ -7,7 +7,7 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 import re
-import os  # NUEVO: Para detectar el sistema operativo
+import os
 
 # Configuración de la página
 st.set_page_config(page_title="Esaú Cars - Invoice Engine", page_icon="🏎️", layout="wide")
@@ -99,57 +99,77 @@ df_costos = st.data_editor(
 
 # --- BOTÓN GENERAR ---
 if st.button("🚀 GENERAR PDF"):
-   try:
-       foto_b64 = ""
-       if subir_foto:
-           foto_b64 = f"data:image/png;base64,{base64.b64encode(subir_foto.read()).decode()}"
-       elif st.session_state['foto_extraida']:
-           try:
-               img_res = requests.get(st.session_state['foto_extraida'], timeout=10)
-               foto_b64 = f"data:image/png;base64,{base64.b64encode(img_res.content).decode()}"
-           except:
-               foto_b64 = ""
+    try:
+        foto_b64 = ""
+        # 1. Manejo de la foto
+        if subir_foto:
+            foto_b64 = f"data:image/png;base64,{base64.b64encode(subir_foto.read()).decode()}"
+        elif st.session_state['foto_extraida']:
+            try:
+                img_res = requests.get(st.session_state['foto_extraida'], timeout=10)
+                foto_b64 = f"data:image/png;base64,{base64.b64encode(img_res.content).decode()}"
+            except:
+                foto_b64 = ""
       
-       with open("logo esau cars.png", "rb") as f:
-           logo_b64 = f"data:image/png;base64,{base64.b64encode(f.read()).decode()}"
+        # 2. Archivos locales (Logo y Plantilla)
+        with open("logo esau cars.png", "rb") as f:
+            logo_b64 = f"data:image/png;base64,{base64.b64encode(f.read()).decode()}"
       
-       with open("plantilla.html", "r", encoding="utf-8") as f:
-           template = Template(f.read())
+        with open("plantilla.html", "r", encoding="utf-8") as f:
+            template = Template(f.read())
 
-       fecha_str = fecha_dt.strftime("%d/%m/%Y")
-       html_final = template.render(
-           producto=producto.upper(),
-           estado=estado_v.upper(),
-           cliente=cliente.upper(),
-           fecha=fecha_str,
-           lote=lote,
-           foto_url=foto_b64,
-           logo_url=logo_b64,
-           costos=df_costos.to_dict('records'),
-           total=f"{df_costos['Monto'].sum():,.2f}"
-       )
+        fecha_str = fecha_dt.strftime("%d/%m/%Y")
+        html_final = template.render(
+            producto=producto.upper(),
+            estado=estado_v.upper(),
+            cliente=cliente.upper(),
+            fecha=fecha_str,
+            lote=lote,
+            foto_url=foto_b64,
+            logo_url=logo_b64,
+            costos=df_costos.to_dict('records'),
+            total=f"{df_costos['Monto'].sum():,.2f}"
+        )
 
-       # CONFIGURACIÓN INTELIGENTE SEGÚN EL SISTEMA
-       if os.name == 'nt':  # Si es Windows
-           path_wk = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe' # Ajusta si tu ruta es distinta
-           config = pdfkit.configuration(wkhtmltopdf=path_wk)
-       else:  # Si es Linux (Streamlit Cloud)
-           config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+        # 3. CONFIGURACIÓN DEL MOTOR DE PDF
+        options = {
+            'page-size': 'Letter',
+            'encoding': "UTF-8",
+            'margin-top': '0',
+            'margin-bottom': '0',
+            'margin-left': '0',
+            'margin-right': '0',
+            'enable-local-file-access': None,
+            'no-outline': None
+        }
 
-       options = {
-           'page-size': 'Letter',
-           'encoding': "UTF-8",
-           'margin-top': '0',
-           'margin-bottom': '0',
-           'margin-left': '0',
-           'margin-right': '0',
-           'enable-local-file-access': None
-       }
-       
-       pdf = pdfkit.from_string(html_final, False, configuration=config, options=options)
+        try:
+            if os.name == 'nt':  # Entorno Windows Local
+                path_wk = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+                config = pdfkit.configuration(wkhtmltopdf=path_wk)
+            else:  # Entorno Streamlit Cloud (Linux)
+                # Ruta común en Debian/Ubuntu
+                bin_path = '/usr/bin/wkhtmltopdf'
+                if os.path.exists(bin_path):
+                    config = pdfkit.configuration(wkhtmltopdf=bin_path)
+                else:
+                    # Si no está en la ruta fija, intentamos que el sistema lo localice solo
+                    config = pdfkit.configuration()
+            
+            pdf = pdfkit.from_string(html_final, False, configuration=config, options=options)
+        except Exception as e_pdf:
+            # Plan B: Generación sin configuración forzada
+            st.warning("Ajustando motor de PDF...")
+            pdf = pdfkit.from_string(html_final, False, options=options)
       
-       st.success("✅ ¡Factura generada!")
-       st.download_button("⬇️ Descargar Factura", data=pdf, file_name=f"Factura_{lote}.pdf", mime="application/pdf")
+        st.success("✅ ¡Factura generada con éxito!")
+        st.download_button(
+            label="⬇️ Descargar Factura",
+            data=pdf,
+            file_name=f"Factura_{lote}.pdf",
+            mime="application/pdf"
+        )
       
-   except Exception as e:
-       st.error(f"Error: {e}")
+    except Exception as e:
+        st.error(f"Error crítico: {e}")
+        st.info("Consejo: Verifica que 'packages.txt' tenga las librerías necesarias en GitHub.")

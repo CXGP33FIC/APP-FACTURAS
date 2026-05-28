@@ -5,167 +5,104 @@
     <style>
         @page {
             size: letter;
-            margin: 0cm;
+            margin: 0.5cm;
         }
         body {
             font-family: Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             color: #1a1c2c;
-        }
-        .container {
-            padding: 40px 50px;
-        }
-        /* Header con Logo y Título */
-        .header-table {
-            width: 100%;
-            margin-bottom: 20px;
-        }
-        .car-title {
-            font-size: 42pt;
-            font-weight: bold;
-            line-height: 1;
-            text-transform: uppercase;
-        }
-        .logo-img {
-            width: 150px;
-            text-align: right;
-        }
-        /* Sección de Foto y Datos */
-        .main-table {
-            width: 100%;
-            margin-bottom: 30px;
-        }
-        .car-photo-cell {
-            width: 65%;
-            vertical-align: top;
-        }
-        .car-photo {
-            width: 450px;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-        .info-cell {
-            width: 35%;
-            vertical-align: top;
-            padding-left: 20px;
-        }
-        .label {
-            font-size: 9pt;
-            color: #666;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
-        .value {
-            font-size: 14pt;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        .lote-box {
-            font-size: 24pt;
-            font-weight: bold;
-            color: #000;
-        }
-        /* Tabla de Costos */
-        table.costos {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        table.costos th {
-            background-color: #f2f2f2;
-            text-align: left;
-            padding: 10px;
             font-size: 10pt;
-            border-bottom: 2px solid #000;
         }
-        table.costos td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #eee;
-            font-size: 11pt;
-        }
-        /* Total */
-        .total-section {
-            margin-top: 20px;
-            text-align: right;
-        }
-        .total-box {
-            display: inline-block;
-            background-color: #000;
-            color: #fff;
-            padding: 15px 30px;
-            font-size: 20pt;
-            font-weight: bold;
-        }
-        .footer {
-            margin-top: 40px;
-            font-size: 8pt;
-            color: #888;
-            border-top: 1px solid #eee;
-            padding-top: 10px;
-        }
+        /* Tabla Principal para Estructura */
+        .wrapper { width: 100%; }
+        
+        .header-table { width: 100%; border-bottom: 3px solid #000; margin-bottom: 10px; }
+        .car-title { font-size: 38pt; font-weight: 900; line-height: 0.9; text-transform: uppercase; }
+        
+        .main-content { width: 100%; margin-bottom: 15px; }
+        .photo-box { width: 420px; height: 260px; background-color: #eee; }
+        .photo-img { width: 420px; height: 260px; object-fit: cover; }
+        
+        .info-panel { padding-left: 20px; vertical-align: top; }
+        .label { color: #666; font-size: 8pt; margin-bottom: 2px; }
+        .value { font-size: 13pt; font-weight: bold; margin-bottom: 10px; }
+        .lote-value { font-size: 28pt; font-weight: 900; color: #000; }
+
+        /* Tabla de Costos Estilo Original */
+        .costos-table { width: 100%; border-collapse: collapse; margin-top: 5px; }
+        .costos-table th { background-color: #000; color: #fff; text-align: left; padding: 8px; font-size: 9pt; }
+        .costos-table td { padding: 8px; border-bottom: 1px solid #ddd; }
+
+        /* Total Section */
+        .total-table { width: 100%; margin-top: 15px; }
+        .total-label { font-size: 12pt; font-weight: bold; text-align: right; padding-right: 10px; }
+        .total-amount { background-color: #000; color: #fff; font-size: 22pt; font-weight: 900; padding: 10px 20px; text-align: center; width: 200px; }
+
+        .footer { margin-top: 20px; font-size: 7.5pt; color: #555; line-height: 1.2; }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="wrapper">
         <table class="header-table">
             <tr>
-                <td>
+                <td style="width: 75%; vertical-align: bottom; padding-bottom: 5px;">
                     <div class="car-title">{{ producto }}</div>
-                    <div style="margin-top: 10px; font-size: 12pt;">
-                        ESTADO DE COMPRA: <b>{{ estado }}</b><br>
-                        CLIENTE: <b>{{ cliente }}</b>
+                    <div style="font-size: 11pt; margin-top: 5px;">
+                        ESTADO DE COMPRA: <b>{{ estado }}</b> &nbsp;&nbsp; | &nbsp;&nbsp; CLIENTE: <b>{{ cliente }}</b>
                     </div>
                 </td>
-                <td class="logo-img">
-                    <img src="{{ logo_url }}" width="150">
+                <td style="width: 25%; text-align: right; vertical-align: middle;">
+                    <img src="{{ logo_url }}" width="140">
                 </td>
             </tr>
         </table>
 
-        <table class="main-table">
+        <table class="main-content">
             <tr>
-                <td class="car-photo-cell">
+                <td class="photo-box">
                     {% if foto_url %}
-                        <img src="{{ foto_url }}" class="car-photo">
+                        <img src="{{ foto_url }}" class="photo-img">
                     {% endif %}
                 </td>
-                <td class="info-cell">
+                <td class="info-panel">
                     <div class="label">FECHA DE OPERACIÓN</div>
                     <div class="value">{{ fecha }}</div>
                     
-                    <div class="label">ID DE INVENTARIO / LOTE</div>
-                    <div class="lote-box">#{{ lote }}</div>
+                    <div style="margin-top: 40px;">
+                        <div class="label">ID DE INVENTARIO / LOTE</div>
+                        <div class="lote-value">#{{ lote }}</div>
+                    </div>
                 </td>
             </tr>
         </table>
 
-        <table class="costos">
+        <table class="costos-table">
             <thead>
                 <tr>
-                    <th>DESCRIPCIÓN DEL CONCEPTO</th>
-                    <th style="text-align: right;">MONTO (USD)</th>
+                    <th style="width: 70%;">DESCRIPCIÓN DEL CONCEPTO</th>
+                    <th style="width: 30%; text-align: right;">MONTO UNITARIO (USD)</th>
                 </tr>
             </thead>
             <tbody>
                 {% for item in costos %}
                 <tr>
                     <td>{{ item.Concepto }}</td>
-                    <td style="text-align: right;">$ {{ "{:,.2f}".format(item.Monto) }}</td>
+                    <td style="text-align: right; font-weight: bold;">$ {{ "{:,.2f}".format(item.Monto) }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
 
-        <div class="total-section">
-            <span style="font-size: 12pt; font-weight: bold; margin-right: 10px;">TOTAL A LIQUIDAR:</span>
-            <div class="total-box">$ {{ total }}</div>
-        </div>
+        <table class="total-table">
+            <tr>
+                <td class="total-label">LIQUIDACIÓN TOTAL (USD)</td>
+                <td class="total-amount">$ {{ total }}</td>
+            </tr>
+        </table>
 
         <div class="footer">
-            <b>CONDICIONES DE UNIDAD:</b><br>
-            Unidad vendida en condiciones "AS-IS" (según se encuentra). No se aceptan reclamaciones posteriores a la firma de conformidad.
+            <b style="color: #000;">CONDICIONES DE UNIDAD:</b><br>
+            Unidad vendida en condiciones "AS-IS" (según se encuentra). No se aceptan reclamaciones posteriores a la firma de conformidad. 
+            Esta factura sirve como comprobante de los cargos generados por la adquisición y gestión logística de la unidad mencionada.
         </div>
     </div>
 </body>

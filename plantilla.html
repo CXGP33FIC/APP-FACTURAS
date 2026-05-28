@@ -5,72 +5,68 @@
     <style>
         @page {
             size: letter;
-            margin: 0.5cm 1cm;
+            margin: 0.7cm 1.2cm;
         }
         body {
             font-family: Helvetica, Arial, sans-serif;
             color: #1a1c2c;
-            margin: 0;
-            padding: 0;
+            line-height: 1.1;
         }
 
-        /* HEADER: Titulo y Logo */
+        /* HEADER */
         .header-table {
             width: 100%;
-            margin-bottom: 5pt;
+            border-bottom: 6px solid #1a1c2c;
+            margin-bottom: 10px;
         }
         .car-title {
-            font-size: 36pt;
+            font-size: 34pt;
             font-weight: 900;
             text-transform: uppercase;
-            line-height: 0.9;
             color: #000;
+            padding-bottom: 5px;
         }
         .logo-img {
-            width: 200pt; /* Logo más grande y proporcional */
+            width: 220pt; /* Logo grande como pediste */
         }
         .meta-info {
             font-size: 11pt;
-            margin-bottom: 10pt;
-        }
-        .hr-top {
-            border: 0;
-            border-top: 5pt solid #1a1c2c;
-            margin-bottom: 15pt;
+            margin: 10px 0;
+            text-transform: uppercase;
         }
 
-        /* CUERPO: Foto y Tarjeta Azul */
-        .main-table {
+        /* CUERPO PRINCIPAL */
+        .main-container {
             width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20pt;
+            margin-bottom: 20px;
         }
         .photo-cell {
-            width: 420pt;
+            width: 380pt;
             padding: 0;
         }
         .main-photo {
-            width: 420pt;
-            height: 280pt;
+            width: 380pt;
+            height: 260pt;
             object-fit: cover;
         }
         .info-card {
-            background-color: #1a1c2c; /* Tu azul original */
+            background-color: #1a1c2c;
             padding: 20pt;
             vertical-align: middle;
+            text-align: left;
         }
         .card-label {
             font-size: 8pt;
             font-weight: bold;
-            color: #ffc107; /* Tu amarillo original */
+            color: #ffc107;
             text-transform: uppercase;
-            margin-bottom: 5pt;
+            margin-bottom: 4px;
         }
         .card-value {
-            font-size: 16pt;
+            font-size: 15pt;
             font-weight: bold;
             color: #ffffff;
-            margin-bottom: 25pt;
+            margin-bottom: 30px;
         }
         .lote-value {
             font-size: 38pt;
@@ -83,7 +79,7 @@
         .costos-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 15pt;
+            margin-bottom: 15px;
         }
         .costos-table th {
             background-color: #f8f8f8;
@@ -100,31 +96,36 @@
             font-weight: bold;
         }
 
-        /* TOTAL */
-        .total-table {
+        /* TOTAL COMPACTO */
+        .total-container {
             width: 100%;
+            text-align: right;
+        }
+        .total-table {
+            width: 320pt;
+            border-collapse: collapse;
         }
         .total-label-box {
             background-color: #ffc107;
-            padding: 15pt;
+            padding: 12pt;
             font-weight: 900;
             font-size: 11pt;
             text-align: center;
-            width: 150pt;
+            width: 120pt;
         }
         .total-amount-box {
             background-color: #1a1c2c;
             color: #ffffff;
-            padding: 15pt;
-            font-size: 28pt;
+            padding: 12pt;
+            font-size: 26pt;
             font-weight: 900;
             text-align: center;
         }
 
         .footer {
-            margin-top: 20pt;
+            margin-top: 25px;
             border-top: 1px dotted #ccc;
-            padding-top: 10pt;
+            padding-top: 10px;
             font-size: 9pt;
             color: #666;
         }
@@ -147,15 +148,13 @@
         <b>ESTADO DE COMPRA:</b> {{ estado }} &nbsp;&nbsp; | &nbsp;&nbsp; <b>CLIENTE:</b> {{ cliente }}
     </div>
 
-    <div class="hr-top"></div>
-
-    <table class="main-table">
+    <table class="main-container">
         <tr>
             <td class="photo-cell">
                 {% if foto_url %}
                     <img src="{{ foto_url }}" class="main-photo">
                 {% else %}
-                    <div style="width: 420pt; height: 280pt; background: #f0f0f0;"></div>
+                    <div style="width: 380pt; height: 260pt; background: #f0f0f0;"></div>
                 {% endif %}
             </td>
             <td class="info-card">
@@ -172,7 +171,7 @@
         <thead>
             <tr>
                 <th>DESCRIPCIÓN DEL CONCEPTO</th>
-                <th style="text-align: right; width: 150pt;">MONTO UNITARIO (USD)</th>
+                <th style="text-align: right; width: 120pt;">MONTO (USD)</th>
             </tr>
         </thead>
         <tbody>
@@ -185,9 +184,9 @@
         </tbody>
     </table>
 
-    <table align="right" style="width: 350pt; border-collapse: collapse;">
+    <table align="right" class="total-table">
         <tr>
-            <td class="total-label-box">LIQUIDACIÓN TOTAL</td>
+            <td class="total-label-box">TOTAL</td>
             <td class="total-amount-box">$ {{ total }}</td>
         </tr>
     </table>
@@ -195,7 +194,7 @@
     <div style="clear: both;"></div>
 
     <div class="footer">
-        <b style="color:#000">CONDICIONES DE UNIDAD:</b> Unidad vendida en condiciones "AS-IS" (según se encuentra). No se aceptan reclamaciones posteriores a la firma de conformidad.
+        <b>CONDICIONES:</b> Unidad vendida en condiciones "AS-IS". No se aceptan reclamaciones posteriores a la firma de conformidad.
     </div>
 
 </body>

@@ -3,189 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        @page {
-            size: letter;
-            margin: 0.5cm;
+        @page { size: letter; margin: 0.5cm 1cm; }
+        body { font-family: Helvetica, Arial, sans-serif; color: #111; }
+        
+        /* Contenedor principal para evitar saltos de página locos */
+        .master-table { width: 100%; border-collapse: collapse; }
+        
+        /* Header Estilo Factura 12 */
+        .title { font-size: 45pt; font-weight: 900; text-transform: uppercase; line-height: 0.8; }
+        .meta { font-size: 11pt; color: #555; text-transform: uppercase; margin-top: 10pt; }
+        
+        .logo-box { text-align: center; width: 150pt; }
+        .logo-circle { 
+            width: 80pt; height: 80pt; 
+            border: 5pt solid #000; 
+            border-radius: 50%; 
+            margin: auto;
         }
-        body {
-            font-family: Helvetica, Arial, sans-serif;
-            background-color: #ffffff;
-            color: #111;
-            margin: 0;
-            padding: 20pt;
-        }
+        
+        .divider { height: 4pt; background-color: #1c1c34; margin: 15pt 0; }
 
-        /* TABLA MAESTRA PARA EL HEADER */
-        .header-table {
-            width: 100%;
-            margin-bottom: 20pt;
-        }
-        .car-title {
-            font-size: 48pt;
-            line-height: 1;
-            font-weight: 900;
-            text-transform: uppercase;
-        }
-        .meta-info {
-            margin-top: 15pt;
-            font-size: 11pt;
-            color: #555;
-            text-transform: uppercase;
-        }
-        .logo-cell {
-            text-align: center;
-            width: 150pt;
-        }
-        .logo-img {
-            width: 120pt;
-        }
-        .brand-name {
-            font-size: 20pt;
-            font-weight: bold;
-            margin-top: 5pt;
-        }
+        /* Bloque de Foto y Lote */
+        .hero-table { width: 100%; border-collapse: collapse; background-color: #161932; }
+        .photo-cell { width: 60%; padding: 0; background-color: #fff; }
+        .info-cell { width: 40%; color: #fff; padding: 20pt; vertical-align: middle; }
+        
+        .label-yellow { color: #f7b500; font-size: 9pt; font-weight: bold; }
+        .big-text { font-size: 26pt; font-weight: bold; margin-bottom: 20pt; }
+        .lot-number { font-size: 45pt; font-weight: 900; color: #f7b500; }
 
-        .divider {
-            height: 4pt;
-            background-color: #1c1c34;
-            margin-bottom: 25pt;
-        }
+        /* Tabla de montos */
+        .items-table { width: 100%; border-collapse: collapse; margin-top: 20pt; }
+        .items-table th { border-bottom: 2pt solid #eee; padding: 10pt 5pt; text-align: left; font-size: 10pt; }
+        .items-table td { border-bottom: 1pt solid #eee; padding: 12pt 5pt; font-size: 12pt; }
 
-        /* SECCIÓN VEHÍCULO: FOTO Y CUADRO AZUL */
-        .vehicle-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .photo-cell {
-            width: 60%;
-            padding: 0;
-        }
-        .main-photo {
-            width: 100%;
-            height: 250pt;
-            object-fit: cover;
-        }
-        .info-cell {
-            width: 40%;
-            background-color: #161932; /* Tu azul original */
-            color: #ffffff;
-            padding: 25pt;
-            vertical-align: middle;
-        }
-        .small-label {
-            color: #f7b500; /* Tu amarillo original */
-            font-size: 9pt;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        .date-text {
-            font-size: 28pt;
-            font-weight: bold;
-            margin-bottom: 30pt;
-        }
-        .lot-number {
-            color: #f7b500;
-            font-size: 45pt;
-            font-weight: 900;
-        }
-
-        /* TABLA DE PRODUCTOS */
-        .items-table {
-            width: 100%;
-            margin-top: 30pt;
-            border-collapse: collapse;
-        }
-        .items-table th {
-            text-align: left;
-            font-size: 10pt;
-            text-transform: uppercase;
-            padding: 12pt 5pt;
-            border-bottom: 2pt solid #e7e7e7;
-        }
-        .items-table td {
-            padding: 15pt 5pt;
-            border-bottom: 1pt solid #ececec;
-            font-size: 12pt;
-        }
-
-        /* TOTAL BICOLOR */
-        .total-container-table {
-            margin-top: 30pt;
-            width: 300pt;
-        }
-        .total-label {
-            background-color: #f7b500;
-            color: #111;
-            padding: 20pt;
-            font-weight: 800;
-            text-transform: uppercase;
-            text-align: center;
-            width: 120pt;
-        }
-        .total-price {
-            background-color: #161932;
-            color: #ffffff;
-            padding: 20pt;
-            font-size: 32pt;
-            font-weight: 900;
-            text-align: center;
-        }
-
-        .footer {
-            margin-top: 40pt;
-            padding-top: 20pt;
-            border-top: 1pt dashed #cfcfcf;
-        }
-        .footer-title {
-            color: #f7b500;
-            font-size: 10pt;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 5pt;
-        }
-        .footer-p {
-            font-size: 10pt;
-            color: #666;
-        }
+        /* Total */
+        .total-table { width: 300pt; border-collapse: collapse; margin-top: 20pt; }
+        .total-label { background-color: #f7b500; padding: 15pt; font-weight: bold; text-align: center; width: 120pt; }
+        .total-val { background-color: #161932; color: #fff; padding: 15pt; font-size: 28pt; font-weight: 900; text-align: center; }
     </style>
 </head>
 <body>
 
-    <table class="header-table">
+    <table class="master-table">
         <tr>
-            <td style="vertical-align: top;">
-                <div class="car-title">{{ producto }}</div>
-                <div class="meta-info">
-                    <b>ESTADO DE COMPRA:</b> {{ estado }}<br>
-                    <b>CLIENTE:</b> {{ cliente }}
+            <td>
+                <div class="title">{{ producto }}</div>
+                <div class="meta">
+                    <b>Estado:</b> {{ estado }} &nbsp;&nbsp; | &nbsp;&nbsp; <b>Cliente:</b> {{ cliente }}
                 </div>
             </td>
-            <td class="logo-cell">
-                <img src="{{ logo_url }}" class="logo-img">
-                <div class="brand-name">ESAÚ CARS</div>
+            <td class="logo-box">
+                <div class="logo-circle">
+                    </div>
+                <div style="font-size: 18pt; font-weight: bold; margin-top: 5pt;">ESAÚ CARS</div>
             </td>
         </tr>
     </table>
 
     <div class="divider"></div>
 
-    <table class="vehicle-table">
+    <table class="hero-table">
         <tr>
             <td class="photo-cell">
-                {% if foto_url %}
-                    <img src="{{ foto_url }}" class="main-photo">
-                {% else %}
-                    <div style="width: 100%; height: 250pt; background-color: #eee;"></div>
-                {% endif %}
+                <img src="{{ foto_url }}" style="width: 100%; height: 240pt; display: block;">
             </td>
             <td class="info-cell">
-                <div class="small-label">FECHA DE OPERACIÓN</div>
-                <div class="date-text">{{ fecha }}</div>
-                
-                <div style="margin-top: 20pt;">
-                    <div class="small-label">ID DE INVENTARIO / LOTE</div>
-                    <div class="lot-number">#{{ lote }}</div>
-                </div>
+                <div class="label-yellow">FECHA DE OPERACIÓN</div>
+                <div class="big-text">{{ fecha }}</div>
+                <div class="label-yellow">ID DE INVENTARIO / LOTE</div>
+                <div class="lot-number">#{{ lote }}</div>
             </td>
         </tr>
     </table>
@@ -193,8 +80,8 @@
     <table class="items-table">
         <thead>
             <tr>
-                <th>DESCRIPCIÓN DEL CONCEPTO</th>
-                <th style="text-align: right;">MONTO UNITARIO (USD)</th>
+                <th>DESCRIPCIÓN</th>
+                <th style="text-align: right;">MONTO (USD)</th>
             </tr>
         </thead>
         <tbody>
@@ -207,22 +94,12 @@
         </tbody>
     </table>
 
-    <table align="right" class="total-container-table">
+    <table align="right" class="total-table">
         <tr>
             <td class="total-label">LIQUIDACIÓN TOTAL</td>
-            <td class="total-price">$ {{ total }}</td>
+            <td class="total-val">$ {{ total }}</td>
         </tr>
     </table>
-
-    <div style="clear: both;"></div>
-
-    <div class="footer">
-        <div class="footer-title">● CONDICIONES DE UNIDAD</div>
-        <div class="footer-p">
-            Unidad vendida en condiciones "AS-IS" (según se encuentra). 
-            No se aceptan reclamaciones posteriores a la firma de conformidad.
-        </div>
-    </div>
 
 </body>
 </html>

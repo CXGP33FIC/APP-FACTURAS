@@ -1,0 +1,6 @@
+streamlit
+jinja2
+pdfkit
+pandas
+requests
+beautifulsoup4

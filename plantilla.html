@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            padding: 10px 70px 40px 70px; 
+            color: #1a1c2c;
+            background-color: #ffffff;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; 
+            margin-top: 5px; 
+            margin-bottom: 25px; 
+            min-height: 180px; 
+        }
+
+        .title-section {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .car-title {
+            font-size: 65px; 
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1;
+            margin: 0;
+            color: #000;
+            letter-spacing: -2px;
+        }
+
+        .meta-info {
+            font-size: 16px; 
+            text-transform: uppercase;
+            margin-top: 15px; 
+        }
+
+        .meta-info div { margin-bottom: 4px; }
+        .label { font-weight: 900; color: #1a1c2c; }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-box img { 
+            width: 320px; 
+            height: auto;
+        }
+
+        .hr-top {
+            border: 0;
+            border-top: 6px solid #1a1c2c;
+            margin-bottom: 40px;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 0;
+            margin-bottom: 50px;
+        }
+
+        .photo-container {
+            flex: 1.8;
+        }
+
+        .main-photo {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .info-card {
+            flex: 1;
+            background: #1a1c2c;
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card-label { 
+            font-size: 11px; 
+            font-weight: 700; 
+            color: #ffc107; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+
+        .card-value { 
+            font-size: 24px; 
+            font-weight: 700; 
+            margin-bottom: 30px; 
+        }
+
+        .lote-value { 
+            font-size: 60px; 
+            font-weight: 900; 
+            color: #ffc107; 
+            margin: 0;
+            line-height: 0.9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+
+        thead th {
+            background-color: #f8f8f8;
+            padding: 20px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 900;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        thead th:first-child::before, thead th:last-child::after {
+            content: "";
+            position: absolute;
+            top: 15%;
+            height: 70%;
+            width: 6px;
+            background: #ffc107;
+        }
+        thead th:first-child::before { left: 0; }
+        thead th:last-child::after { right: 0; }
+
+        tbody td {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .total-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .total-wrapper {
+            display: flex;
+        }
+
+        .total-label-box {
+            background: #ffc107;
+            padding: 20px 30px;
+            font-weight: 900;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .total-amount-box {
+            background: #1a1c2c;
+            color: #fff;
+            padding: 20px 50px;
+            font-size: 40px;
+            font-weight: 900;
+        }
+
+        .footer {
+            margin-top: 80px;
+            border-top: 1px dotted #ccc;
+            padding-top: 30px;
+        }
+
+        .footer-title {
+            font-size: 14px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .footer-title::before {
+            content: "";
+            width: 10px; height: 10px; background: #ffc107; border-radius: 50%; margin-right: 12px;
+        }
+
+        .footer-text { font-size: 13px; color: #666; line-height: 1.6; }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="title-section">
+            <h1 class="car-title">{{ producto }}</h1>
+            <div class="meta-info">
+                <div><span class="label">ESTADO DE COMPRA:</span> {{ estado }}</div>
+                <div><span class="label">CLIENTE:</span> {{ cliente }}</div>
+            </div>
+        </div>
+        <div class="logo-box">
+            <img src="{{ logo_url }}">
+        </div>
+    </div>
+
+    <hr class="hr-top">
+
+    <div class="main-content">
+        <div class="photo-container">
+            {% if foto_url %}
+                <img src="{{ foto_url }}" class="main-photo">
+            {% else %}
+                <div style="width: 100%; height: 380px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #ccc; font-weight: bold;">
+                    SIN FOTO DISPONIBLE
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="info-card">
+            <div class="card-label">FECHA DE OPERACIÓN</div>
+            <div class="card-value">{{ fecha }}</div>
+            
+            <div class="card-label">ID DE INVENTARIO / LOTE</div>
+            <div class="lote-value">#{{ lote }}</div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>DESCRIPCIÓN DEL CONCEPTO</th>
+                <th style="text-align: right;">MONTO UNITARIO (USD)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in costos %}
+            <tr>
+                <td>{{ item.Concepto }}</td>
+                <td style="text-align: right;">$ {{ "{:,.2f}".format(item.Monto) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="total-container">
+        <div class="total-wrapper">
+            <div class="total-label-box">LIQUIDACIÓN TOTAL</div>
+            <div class="total-amount-box">$ {{ total }}</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-title">CONDICIONES DE UNIDAD</div>
+        <div class="footer-text">
+            Unidad vendida en condiciones "AS-IS" (según se encuentra). No se aceptan reclamaciones posteriores a la firma de conformidad.
+        </div>
+    </div>
+
+</body>
+</html>

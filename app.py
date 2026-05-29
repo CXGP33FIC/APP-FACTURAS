@@ -7,23 +7,28 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import asyncio
+import os
 from playwright.async_api import async_playwright
 from io import BytesIO
 
 # Configuración de la página
 st.set_page_config(page_title="Esaú Cars - Invoice Engine", page_icon="🏎️", layout="wide")
 
-# --- MOTOR DE RENDERIZADO PLAYWRIGHT (ASÍNCRONO) ---
+# --- MOTOR DE RENDERIZADO PLAYWRIGHT (CON INSTALACIÓN AUTOMÁTICA) ---
 async def producir_pdf(html_content):
     async with async_playwright() as p:
+        # Comando para instalar el navegador en el servidor si no existe
+        # Esto soluciona el error de "Executable doesn't exist"
+        os.system("playwright install chromium")
+        
         # Lanzar navegador (Chromium)
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page()
         
-        # Establecer el contenido HTML y esperar a que las imágenes carguen
+        # Establecer el contenido HTML y esperar a que todo cargue (imágenes b64 incluidas)
         await page.set_content(html_content, wait_until="networkidle")
         
-        # Generar PDF con ajustes de alta calidad
+        # Generar PDF con los ajustes de tu diseño
         pdf_bytes = await page.pdf(
             format="Letter",
             print_background=True,
@@ -32,7 +37,7 @@ async def producir_pdf(html_content):
         await browser.close()
         return pdf_bytes
 
-# --- LÓGICA DE EXTRACCIÓN (Copart) ---
+# --- LÓGICA DE EXTRACCIÓN (Tu lógica original de Copart) ---
 def extraer_datos_enlace(url):
     try:
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"}
@@ -85,7 +90,7 @@ with st.expander("🌐 Importar desde Copart", expanded=True):
     url_input = col_link.text_input("Pega el enlace aquí:")
     if col_btn.button("🔍 Cargar Datos"):
         if url_input:
-            with st.spinner("Extrayendo datos..."):
+            with st.spinner("Extrayendo datos e imágenes..."):
                 n, f, e, l = extraer_datos_enlace(url_input)
                 st.session_state['auto_modelo'] = n
                 st.session_state['foto_extraida'] = f
@@ -93,7 +98,7 @@ with st.expander("🌐 Importar desde Copart", expanded=True):
                 st.session_state['lote_extraido'] = l
                 st.rerun()
 
-# --- FORMULARIO DE DATOS ---
+# --- FORMULARIO ---
 with st.container():
     c1, c2, c3 = st.columns(3)
     folio = c1.text_input("Folio", value="46950416")
@@ -109,16 +114,17 @@ with st.container():
     
     subir_foto = st.file_uploader("Cambiar foto (Opcional)", type=["jpg", "png"])
 
+# Editor de tabla de costos
 df_costos = st.data_editor(
     pd.DataFrame([{"Concepto": "Precio de Compra", "Monto": 0.0}]),
     num_rows="dynamic",
     use_container_width=True
 )
 
-# --- ACCIÓN DE GENERAR ---
+# --- BOTÓN GENERAR ---
 if st.button("🚀 GENERAR PDF"):
     try:
-        # 1. Procesar Imagen de Vehículo
+        # 1. Procesar Foto del Vehículo
         foto_b64 = ""
         if subir_foto:
             foto_b64 = f"data:image/png;base64,{base64.b64encode(subir_foto.read()).decode()}"
@@ -129,22 +135,20 @@ if st.button("🚀 GENERAR PDF"):
             except:
                 foto_b64 = ""
       
-        # 2. Procesar Logo (debe existir el archivo en la carpeta)
+        # 2. Procesar Logo de la Empresa
         try:
             with open("logo esau cars.png", "rb") as f:
                 logo_b64 = f"data:image/png;base64,{base64.b64encode(f.read()).decode()}"
         except FileNotFoundError:
             logo_b64 = ""
-            st.warning("No se encontró 'logo esau cars.png'")
+            st.warning("⚠️ No se encontró 'logo esau cars.png' en la carpeta.")
       
-        # 3. Leer Plantilla HTML
+        # 3. Renderizar Plantilla HTML con Jinja2
         with open("plantilla.html", "r", encoding="utf-8") as f:
-            template_content = f.read()
-            template = Template(template_content)
+            template = Template(f.read())
 
-        # 4. Renderizar contenido
         fecha_str = fecha_dt.strftime("%d/%m/%Y")
-        html_final = template.render(
+        html_renderizado = template.render(
             producto=producto.upper(),
             estado=estado_v.upper(),
             cliente=cliente.upper(),
@@ -156,17 +160,17 @@ if st.button("🚀 GENERAR PDF"):
             total=f"{df_costos['Monto'].sum():,.2f}"
         )
 
-        # 5. Generación del PDF con el nuevo motor
-        with st.spinner("Generando PDF de alta calidad con Playwright..."):
-            pdf_bytes = asyncio.run(producir_pdf(html_final))
+        # 4. Generar el PDF usando el motor de Playwright
+        with st.spinner("Iniciando motor de impresión (esto puede tardar 1 min la primera vez)..."):
+            pdf_resultado = asyncio.run(producir_pdf(html_renderizado))
             
             st.success("✅ ¡Factura generada con éxito!")
             st.download_button(
                 label="⬇️ Descargar Factura",
-                data=pdf_bytes,
+                data=pdf_resultado,
                 file_name=f"Factura_{lote}.pdf",
                 mime="application/pdf"
             )
       
     except Exception as e:
-        st.error(f"Error crítico: {e}")
+        st.error(f"❌ Error crítico: {e}")

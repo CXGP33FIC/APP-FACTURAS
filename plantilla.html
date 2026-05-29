@@ -3,103 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        @page { size: letter; margin: 0.5cm 1cm; }
-        body { font-family: Helvetica, Arial, sans-serif; color: #111; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
         
-        /* Contenedor principal para evitar saltos de página locos */
-        .master-table { width: 100%; border-collapse: collapse; }
-        
-        /* Header Estilo Factura 12 */
-        .title { font-size: 45pt; font-weight: 900; text-transform: uppercase; line-height: 0.8; }
-        .meta { font-size: 11pt; color: #555; text-transform: uppercase; margin-top: 10pt; }
-        
-        .logo-box { text-align: center; width: 150pt; }
-        .logo-circle { 
-            width: 80pt; height: 80pt; 
-            border: 5pt solid #000; 
-            border-radius: 50%; 
-            margin: auto;
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0; padding: 40px; color: #111;
         }
+        .header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            border-bottom: 5px solid #1a1c34; padding-bottom: 15px; margin-bottom: 20px;
+        }
+        .title h1 {
+            font-size: 38pt; /* Un poco más pequeño como pediste */
+            font-weight: 900; margin: 0; line-height: 0.9; text-transform: uppercase;
+        }
+        .meta {
+            margin-top: 15px; font-size: 12px; text-transform: uppercase; color: #444; letter-spacing: 0.5px;
+        }
+        .logo-box { text-align: center; }
+        .logo-img { height: 85px; }
+        .brand { font-weight: 700; font-size: 22px; margin-top: 5px; }
+
+        /* Contenedor principal: 70% foto, 30% azul */
+        .hero {
+            display: grid; grid-template-columns: 7fr 3fr; /* 70% y 30% para que no se apachurre */
+            margin-bottom: 30px; overflow: hidden;
+        }
+        .hero-img {
+            width: 100%; height: 320px; object-fit: cover; display: block;
+        }
+        .hero-info {
+            background: #161932; color: white; padding: 30px;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .label { color: #f7b500; font-weight: 900; font-size: 10px; text-transform: uppercase; margin-bottom: 5px; }
+        .val { font-size: 24px; font-weight: 700; margin-bottom: 30px; }
+        .lote-val { font-size: 42px; font-weight: 900; color: #f7b500; line-height: 1; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { text-align: left; padding: 12px; border-bottom: 2px solid #eee; font-size: 12px; text-transform: uppercase; }
+        td { padding: 15px 12px; border-bottom: 1px solid #eee; font-size: 16px; font-weight: 700; }
         
-        .divider { height: 4pt; background-color: #1c1c34; margin: 15pt 0; }
-
-        /* Bloque de Foto y Lote */
-        .hero-table { width: 100%; border-collapse: collapse; background-color: #161932; }
-        .photo-cell { width: 60%; padding: 0; background-color: #fff; }
-        .info-cell { width: 40%; color: #fff; padding: 20pt; vertical-align: middle; }
-        
-        .label-yellow { color: #f7b500; font-size: 9pt; font-weight: bold; }
-        .big-text { font-size: 26pt; font-weight: bold; margin-bottom: 20pt; }
-        .lot-number { font-size: 45pt; font-weight: 900; color: #f7b500; }
-
-        /* Tabla de montos */
-        .items-table { width: 100%; border-collapse: collapse; margin-top: 20pt; }
-        .items-table th { border-bottom: 2pt solid #eee; padding: 10pt 5pt; text-align: left; font-size: 10pt; }
-        .items-table td { border-bottom: 1pt solid #eee; padding: 12pt 5pt; font-size: 12pt; }
-
-        /* Total */
-        .total-table { width: 300pt; border-collapse: collapse; margin-top: 20pt; }
-        .total-label { background-color: #f7b500; padding: 15pt; font-weight: bold; text-align: center; width: 120pt; }
-        .total-val { background-color: #161932; color: #fff; padding: 15pt; font-size: 28pt; font-weight: 900; text-align: center; }
+        .total-row {
+            display: flex; justify-content: flex-end; margin-top: 30px;
+        }
+        .total-box { display: flex; width: 350px; }
+        .total-label {
+            background: #f7b500; color: #000; padding: 20px; width: 45%;
+            font-weight: 900; text-transform: uppercase; text-align: center; font-size: 12px;
+        }
+        .total-price {
+            background: #161932; color: #fff; padding: 20px; width: 55%;
+            font-size: 32px; font-weight: 900; text-align: center;
+        }
+        .footer {
+            margin-top: 50px; border-top: 1px dashed #ccc; padding-top: 20px;
+            font-size: 11px; color: #666; line-height: 1.6;
+        }
     </style>
 </head>
 <body>
+    <div class="header">
+        <div class="title">
+            <h1>{{ producto }}</h1>
+            <div class="meta">
+                <b>ESTADO DE COMPRA:</b> {{ estado }} &nbsp;&nbsp;|&nbsp;&nbsp; <b>CLIENTE:</b> {{ cliente }}
+            </div>
+        </div>
+        <div class="logo-box">
+            <img src="{{ logo_url }}" class="logo-img">
+            <div class="brand">ESAÚ CARS</div>
+        </div>
+    </div>
 
-    <table class="master-table">
-        <tr>
-            <td>
-                <div class="title">{{ producto }}</div>
-                <div class="meta">
-                    <b>Estado:</b> {{ estado }} &nbsp;&nbsp; | &nbsp;&nbsp; <b>Cliente:</b> {{ cliente }}
-                </div>
-            </td>
-            <td class="logo-box">
-                <div class="logo-circle">
-                    </div>
-                <div style="font-size: 18pt; font-weight: bold; margin-top: 5pt;">ESAÚ CARS</div>
-            </td>
-        </tr>
-    </table>
+    <div class="hero">
+        <img src="{{ foto_url }}" class="hero-img">
+        <div class="hero-info">
+            <div class="label">FECHA DE OPERACIÓN</div>
+            <div class="val">{{ fecha }}</div>
+            <div class="label">ID DE INVENTARIO / LOTE</div>
+            <div class="lote-val">#{{ lote }}</div>
+        </div>
+    </div>
 
-    <div class="divider"></div>
-
-    <table class="hero-table">
-        <tr>
-            <td class="photo-cell">
-                <img src="{{ foto_url }}" style="width: 100%; height: 240pt; display: block;">
-            </td>
-            <td class="info-cell">
-                <div class="label-yellow">FECHA DE OPERACIÓN</div>
-                <div class="big-text">{{ fecha }}</div>
-                <div class="label-yellow">ID DE INVENTARIO / LOTE</div>
-                <div class="lot-number">#{{ lote }}</div>
-            </td>
-        </tr>
-    </table>
-
-    <table class="items-table">
+    <table>
         <thead>
             <tr>
-                <th>DESCRIPCIÓN</th>
-                <th style="text-align: right;">MONTO (USD)</th>
+                <th>DESCRIPCIÓN DEL CONCEPTO</th>
+                <th style="text-align: right;">MONTO UNITARIO (USD)</th>
             </tr>
         </thead>
         <tbody>
             {% for item in costos %}
             <tr>
                 <td>{{ item.Concepto }}</td>
-                <td style="text-align: right; font-weight: bold;">$ {{ "{:,.2f}".format(item.Monto) }}</td>
+                <td style="text-align: right;">$ {{ "{:,.2f}".format(item.Monto) }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
-    <table align="right" class="total-table">
-        <tr>
-            <td class="total-label">LIQUIDACIÓN TOTAL</td>
-            <td class="total-val">$ {{ total }}</td>
-        </tr>
-    </table>
+    <div class="total-row">
+        <div class="total-box">
+            <div class="total-label">LIQUIDACIÓN TOTAL</div>
+            <div class="total-price">$ {{ total }}</div>
+        </div>
+    </div>
 
+    <div class="footer">
+        <b style="color: #f7b500; text-transform: uppercase;">● Condiciones de unidad</b><br>
+        Unidad vendida en condiciones "AS-IS" (según se encuentra). No se aceptan reclamaciones posteriores a la firma de conformidad. Esta factura constituye el comprobante oficial de pago.
+    </div>
 </body>
 </html>

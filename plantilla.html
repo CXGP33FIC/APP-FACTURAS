@@ -6,27 +6,33 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0; padding: 40px; color: #111;
         }
         .header {
-            display: flex; justify-content: space-between; align-items: flex-end;
-            border-bottom: 5px solid #1a1c34; padding-bottom: 15px; margin-bottom: 20px;
+            display: flex; justify-content: space-between; align-items: center; /* Alineado al centro para mejor balance */
+            border-bottom: 5px solid #1a1c34; padding-bottom: 20px; margin-bottom: 20px;
         }
         .title h1 {
-            font-size: 38pt; /* Un poco más pequeño como pediste */
+            font-size: 38pt;
             font-weight: 900; margin: 0; line-height: 0.9; text-transform: uppercase;
         }
         .meta {
             margin-top: 15px; font-size: 12px; text-transform: uppercase; color: #444; letter-spacing: 0.5px;
         }
-        .logo-box { text-align: center; }
-        .logo-img { height: 85px; }
-        .brand { font-weight: 700; font-size: 22px; margin-top: 5px; }
+        
+        /* AJUSTE DEL LOGO */
+        .logo-box { 
+            text-align: right; 
+        }
+        .logo-img { 
+            height: 120px; /* Aumentado para ser proporcional al título */
+            width: auto;
+            display: block;
+        }
 
-        /* Contenedor principal: 70% foto, 30% azul */
         .hero {
-            display: grid; grid-template-columns: 7fr 3fr; /* 70% y 30% para que no se apachurre */
+            display: grid; grid-template-columns: 7fr 3fr;
             margin-bottom: 30px; overflow: hidden;
         }
         .hero-img {
@@ -41,8 +47,8 @@
         .lote-val { font-size: 42px; font-weight: 900; color: #f7b500; line-height: 1; }
 
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th { text-align: left; padding: 12px; border-bottom: 2px solid #eee; font-size: 12px; text-transform: uppercase; }
-        td { padding: 15px 12px; border-bottom: 1px solid #eee; font-size: 16px; font-weight: 700; }
+        th { text-align: left; padding: 12px; border-bottom: 2px solid #eee; font-size: 11px; text-transform: uppercase; }
+        td { padding: 15px 12px; border-bottom: 1px solid #eee; font-size: 15px; font-weight: 700; }
         
         .total-row {
             display: flex; justify-content: flex-end; margin-top: 30px;
@@ -50,7 +56,7 @@
         .total-box { display: flex; width: 350px; }
         .total-label {
             background: #f7b500; color: #000; padding: 20px; width: 45%;
-            font-weight: 900; text-transform: uppercase; text-align: center; font-size: 12px;
+            font-weight: 900; text-transform: uppercase; text-align: center; font-size: 11px;
         }
         .total-price {
             background: #161932; color: #fff; padding: 20px; width: 55%;
@@ -58,7 +64,7 @@
         }
         .footer {
             margin-top: 50px; border-top: 1px dashed #ccc; padding-top: 20px;
-            font-size: 11px; color: #666; line-height: 1.6;
+            font-size: 10px; color: #666; line-height: 1.6;
         }
     </style>
 </head>
@@ -72,7 +78,6 @@
         </div>
         <div class="logo-box">
             <img src="{{ logo_url }}" class="logo-img">
-            <div class="brand">ESAÚ CARS</div>
         </div>
     </div>
 
@@ -112,7 +117,7 @@
 
     <div class="footer">
         <b style="color: #f7b500; text-transform: uppercase;">● Condiciones de unidad</b><br>
-        Unidad vendida en condiciones "AS-IS" (según se encuentra). No se aceptan reclamaciones posteriores a la firma de conformidad. Esta factura constituye el comprobante oficial de pago.
+        Unidad vendida en condiciones "AS-IS" (según se encuentra). No se aceptan reclamaciones posteriores a la firma de conformidad. Esta factura constituye el comprobante oficial de pago y liquidación final.
     </div>
 </body>
 </html>

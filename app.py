@@ -17,7 +17,7 @@ st.set_page_config(page_title="Esaú Cars - Invoice Engine", page_icon="🏎️"
 # --- MOTOR DE RENDERIZADO PLAYWRIGHT ---
 async def producir_pdf(html_content):
     async with async_playwright() as p:
-        # Asegurar instalación de chromium
+        # Asegurar instalación de chromium en el servidor
         os.system("playwright install chromium")
         
         browser = await p.chromium.launch(headless=True)
@@ -32,7 +32,7 @@ async def producir_pdf(html_content):
             print_background=True,
             margin={"top": "0cm", "bottom": "0cm", "left": "0cm", "right": "0cm"},
             display_header_footer=False,
-            scale=1.0 # Mantener escala real para evitar desenfoque
+            scale=1.0 
         )
         await browser.close()
         return pdf_bytes
@@ -76,7 +76,7 @@ def extraer_datos_enlace(url):
     except:
         return "", None, "", ""
 
-# --- SESIÓN ---
+# --- MANEJO DE SESIÓN ---
 for key in ['auto_modelo', 'foto_extraida', 'estado_compra', 'lote_extraido']:
     if key not in st.session_state:
         st.session_state[key] = ""
@@ -115,7 +115,6 @@ df_costos = st.data_editor(
 
 if st.button("🚀 GENERAR PDF"):
     try:
-        # Procesar Fotos
         foto_b64 = ""
         if subir_foto:
             foto_b64 = f"data:image/png;base64,{base64.b64encode(subir_foto.read()).decode()}"
@@ -129,7 +128,6 @@ if st.button("🚀 GENERAR PDF"):
         except:
             logo_b64 = ""
 
-        # Renderizar Plantilla
         with open("plantilla.html", "r", encoding="utf-8") as f:
             template = Template(f.read())
 
@@ -146,7 +144,7 @@ if st.button("🚀 GENERAR PDF"):
             total=f"{df_costos['Monto'].sum():,.2f}"
         )
 
-        with st.spinner("Imprimiendo factura en alta calidad..."):
+        with st.spinner("Imprimiendo factura..."):
             pdf_bytes = asyncio.run(producir_pdf(html_final))
             st.success("✅ ¡Generada!")
             st.download_button("⬇️ Descargar Factura", data=pdf_bytes, file_name=f"Factura_{lote}.pdf", mime="application/pdf")

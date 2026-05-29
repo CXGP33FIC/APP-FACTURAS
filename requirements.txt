@@ -4,3 +4,5 @@ pandas
 requests
 beautifulsoup4
 xhtml2pdf
+playwright
+playwright-stealth
